@@ -66,12 +66,6 @@ print(extract_json(original_text, [], list[Item]))
 The output will be:
 
 ```py
-[Item(index=0, label='A'), Item(index=1, label='B')]
-```
-
-The output will be:
-
-```py
 [{'index': 0, 'label': 'A'}, {'index': 1, 'label': 'B'}]
 ```
 
