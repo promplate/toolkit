@@ -87,3 +87,97 @@ The output will be:
 ```py
 {'results': [{'index': 1}, {}]}
 ```
+
+### openai
+
+#### `count_token`
+
+count number of tokens in prompt
+
+##### Usages
+
+```py
+def count_token(prompt: str, enc: Encoding | None = None) -> int:
+```
+
+Provide your prompt, get its token count. The second parameter is the `tiktoken.Encoding` instance, will default to `get_encoding("cl100k_base")` if not provided.
+
+```py
+def count_token(prompt: dict | list[dict], enc: Encoding | None = None) -> int:
+```
+
+Note that it can also be a single message / a list of messages. Every message should be a dict in the schema below:
+
+```py
+class Message(TypedDict):
+    role: str
+    content: str
+    name: NotRequired[str]
+```
+
+##### Examples
+
+###### Plain text
+
+```py
+from tiktoken import encoding_for_model
+from promptools.openai import count_token
+
+print(count_token("hi", encoding_for_model("gpt-3.5-turbo")))
+```
+
+The output will be:
+
+```py
+1
+```
+
+###### Single message
+
+```py
+from promptools.openai import count_token
+
+count_token({"role": "user", "content": "hi"})
+```
+
+The output will be:
+
+```py
+5
+```
+
+###### List of messages
+
+```py
+from promptools.openai import count_token
+
+count_token([
+    {"role": "user", "content": "hi"},
+    {"role": "assistant", "content": "Hello! How can I assist you today?"},
+])
+```
+
+The output will be:
+
+```py
+21
+```
+
+###### Integrating with `promplate`
+
+```py
+from promplate.prompt.chat import U, A, S
+from promptools.openai import count_token
+
+count_token([
+    S @ "background" > "You are a helpful assistant.",
+    U @ "example_user" > "hi",
+    A @ "example_assistant" > "Hello! How can I assist you today?",
+])
+```
+
+The output will be:
+
+```py
+40
+```
