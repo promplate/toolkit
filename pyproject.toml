@@ -20,6 +20,7 @@ classifiers = [
 
 [project.optional-dependencies]
 validation = ["pydantic>=2"]
+tokenizer = ["tiktoken>=0.3"]
 
 [build-system]
 requires = ["pdm-backend"]
