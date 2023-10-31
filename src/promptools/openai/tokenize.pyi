@@ -1,9 +1,9 @@
-from typing import NotRequired, TypedDict, overload
+from typing import Literal, NotRequired, TypedDict, overload
 
 from tiktoken import Encoding
 
 class Message(TypedDict):
-    role: str
+    role: Literal["system", "user", "assistant"]
     content: str
     name: NotRequired[str]
 
