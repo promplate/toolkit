@@ -12,7 +12,7 @@ def count_token(prompt, enc=None):
         return len(enc.encode(prompt, disallowed_special=()))
 
     if isinstance(prompt, list):
-        return 3 + sum(map(count_token, prompt))
+        return 3 + sum(count_token(i, enc) for i in prompt)
 
     if isinstance(prompt, dict):
         return (
