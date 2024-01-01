@@ -7,6 +7,7 @@ class Message(TypedDict):
     content: str
     name: NotRequired[str]
 
+def cached_get_encoding(encoding_name: str) -> Encoding: ...
 @overload
 def count_token(prompt: str, enc: Encoding | None = None) -> int: ...
 @overload
