@@ -1,17 +1,17 @@
 from contextlib import suppress
 from re import DOTALL, compile
 
-from partial_json_parser import loads
+from partial_json_parser import ALL, loads
 
 
-def extract_json(text: str, fallback=None, expect=None):
+def extract_json(text: str, fallback=None, expect=None, allow_partial=ALL):
     """parse JSON from raw LLM response text"""
 
     with suppress(IndexError):
         text = find_json_blocks(text)[-1]  # choose the last one
 
     with suppress(ValueError):
-        result = loads(text)
+        result = loads(text, allow_partial)
         if expect is None:
             return result
 
