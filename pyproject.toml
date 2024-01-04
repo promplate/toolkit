@@ -1,9 +1,9 @@
 [project]
 name = "promptools"
-version = "0.1.2"
+version = "0.1.3rc0"
 description = "useful utilities for prompt engineering"
 authors = [{ name = "Muspi Merol", email = "me@promplate.dev" }]
-dependencies = ["partial-json-parser>=0.1.2.1"]
+dependencies = ["partial-json-parser>=0.1.2.1", "attrs>=23"]
 requires-python = ">=3.7"
 readme = "README.md"
 license = { text = "MIT" }
@@ -21,14 +21,22 @@ classifiers = [
 [project.optional-dependencies]
 validation = ["pydantic>=2"]
 tokenizer = ["tiktoken>=0.3"]
+promplate = ["promplate>=0.3"]
 
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm.dev-dependencies]
-dev = ["isort", "black", "ipython"]
+dev = ["isort", "black", "ipython", "pytest"]
 
 [tool.pdm.scripts]
+test = "pytest"
 fmt = { composite = ["isort .", "black ."] }
 i = "ipython"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
