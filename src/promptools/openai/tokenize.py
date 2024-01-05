@@ -16,13 +16,11 @@ def count_token(prompt, enc=None):
         return len(enc.encode(prompt, disallowed_special=()))
 
     if isinstance(prompt, list):
-        return 3 + sum(count_token(i, enc) for i in prompt)
+        if len(prompt) == 0:
+            return 0
+        return sum(count_token(i, enc) for i in prompt) + (0 if isinstance(prompt[0], str) else 3)
 
     if isinstance(prompt, dict):
-        return (
-            3
-            + (len(enc.encode(f"name={prompt['name']}")) if "name" in prompt else 1)
-            + len(enc.encode(prompt["content"]))
-        )
+        return 3 + (len(enc.encode(f"name={prompt['name']}")) if "name" in prompt else 1) + len(enc.encode(prompt["content"]))
 
     raise TypeError(prompt)

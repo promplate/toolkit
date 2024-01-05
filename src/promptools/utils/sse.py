@@ -35,20 +35,20 @@ class Event:
         return event_template.render(asdict(self))
 
 
-def as_event_stream(gen, event=None):
+def as_event_stream(gen):
     if isgenerator(gen):
 
         def _():
-            for line in gen:
-                yield str(Event(line, event))
+            for i in gen:
+                yield Event(*i) if isinstance(i, tuple) else Event(i)
 
         return _()
 
     if isasyncgen(gen):
 
         async def _():
-            async for line in gen:
-                yield str(Event(line, event))
+            async for i in gen:
+                yield Event(*i) if isinstance(i, tuple) else Event(i)
 
         return _()
 
@@ -58,13 +58,13 @@ def as_event_stream(gen, event=None):
 
         @wraps(gen)
         async def _(*args, **kwargs):
-            async for line in gen(*args, **kwargs):
-                yield str(Event(line, event))
+            async for i in gen(*args, **kwargs):
+                yield Event(*i) if isinstance(i, tuple) else Event(i)
 
         return _
 
     @wraps(gen)
     def _(*args, **kwargs):
-        return as_event_stream(gen(*args, **kwargs), event)
+        return as_event_stream(gen(*args, **kwargs))
 
     return _

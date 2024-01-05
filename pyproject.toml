@@ -1,6 +1,6 @@
 [project]
 name = "promptools"
-version = "0.1.3rc0"
+version = "0.1.3rc1"
 description = "useful utilities for prompt engineering"
 authors = [{ name = "Muspi Merol", email = "me@promplate.dev" }]
 dependencies = ["partial-json-parser>=0.1.2.1", "attrs>=23"]
@@ -36,7 +36,7 @@ fmt = { composite = ["isort .", "black ."] }
 i = "ipython"
 
 [tool.black]
-line-length = 100
+line-length = 140
 
 [tool.isort]
 profile = "black"

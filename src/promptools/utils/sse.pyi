@@ -1,7 +1,7 @@
 from itertools import count
 from typing import Any, AsyncIterator, Callable, Iterator, ParamSpec, TypeVar, overload
 
-from attrs import asdict, define
+from attrs import define
 from promplate import Template
 
 _template: str
@@ -19,7 +19,15 @@ class Event:
 AnyIterator = TypeVar("AnyIterator", Iterator[str], AsyncIterator[str])
 P = ParamSpec("P")
 
+type SyncAnyIterator = Iterator[str] | Iterator[tuple[str, Any]] | Iterator[tuple[str, Any, Callable[[], Any] | Any]]
+
+type AsyncAnyIterator = AsyncIterator[str] | AsyncIterator[tuple[str, Any]] | AsyncIterator[tuple[str, Any, Callable[[], Any] | Any]]
+
 @overload
-def as_event_stream(gen: AnyIterator) -> AnyIterator: ...
+def as_event_stream(gen: SyncAnyIterator) -> Iterator[Event]: ...
 @overload
-def as_event_stream(gen: Callable[P, AnyIterator]) -> Callable[P, AnyIterator]: ...
+def as_event_stream(gen: AsyncAnyIterator) -> AsyncIterator[Event]: ...
+@overload
+def as_event_stream(gen: Callable[P, SyncAnyIterator]) -> Callable[P, Iterator[Event]]: ...
+@overload
+def as_event_stream(gen: Callable[P, AsyncAnyIterator]) -> Callable[P, AsyncIterator[Event]]: ...

@@ -97,10 +97,10 @@ count number of tokens in prompt
 ##### Usages
 
 ```py
-def count_token(prompt: str, enc: Encoding | None = None) -> int:
+def count_token(prompt: str | list[str], enc: Encoding | None = None) -> int:
 ```
 
-Provide your prompt, get its token count. The second parameter is the `tiktoken.Encoding` instance, will default to `get_encoding("cl100k_base")` if not provided.
+Provide your prompt / a list of prompts, get its token count. The second parameter is the `tiktoken.Encoding` instance, will default to `get_encoding("cl100k_base")` if not provided. The default `tiktoken.Encoding` instance is cached, and will not be re-created every time.
 
 ```py
 def count_token(prompt: dict | list[dict], enc: Encoding | None = None) -> int:
@@ -130,6 +130,20 @@ The output will be:
 
 ```py
 1
+```
+
+##### List of plain texts
+
+```py
+from promptools.openai import count_token
+
+print(count_token(["hi", "hello"]))
+```
+
+The output will be:
+
+```py
+2
 ```
 
 ###### Single message
