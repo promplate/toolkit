@@ -1,10 +1,10 @@
 """Count tokens for OpenAI models"""
 
-from functools import cache
+from functools import lru_cache
 
 from tiktoken import get_encoding
 
-cached_get_encoding = cache(get_encoding)
+cached_get_encoding = lru_cache(1)(get_encoding)
 
 
 def count_token(prompt, enc=None):
