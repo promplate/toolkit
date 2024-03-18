@@ -15,13 +15,12 @@ def extract_json(text: str, fallback=None, expect=None, allow_partial=ALL):
         if expect is None:
             return result
 
-        from pydantic import BaseModel, TypeAdapter, ValidationError
+        from pydantic import ValidationError
+
+        from .validate import get_validator
 
         with suppress(ValidationError):
-            with suppress(TypeError):
-                if issubclass(expect, BaseModel):
-                    return expect.model_validate(result)
-            return TypeAdapter(expect).validate_python(result)
+            return get_validator(expect)(result)
 
     return fallback
 

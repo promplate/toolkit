@@ -9,7 +9,7 @@ M = TypeVar("M")
 def extract_json(
     text: str,
     fallback: F = None,
-    expect: Type[M] = JSON,
+    expect: Type[M] = type[JSON],
     allow_partial: Allow = ALL,
 ) -> M | F: ...
 
