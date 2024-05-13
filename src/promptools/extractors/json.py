@@ -1,7 +1,7 @@
 from contextlib import suppress
 from re import DOTALL, compile
 
-from partial_json_parser import ALL, loads
+from partial_json_parser import ALL, ensure_json, loads
 
 
 def extract_json(text: str, fallback=None, expect=None, allow_partial=ALL):
@@ -11,16 +11,17 @@ def extract_json(text: str, fallback=None, expect=None, allow_partial=ALL):
         text = find_json_blocks(text)[-1]  # choose the last one
 
     with suppress(ValueError):
-        result = loads(text, allow_partial)
         if expect is None:
-            return result
+            return loads(text, allow_partial)
+
+        json = ensure_json(text, allow_partial)
 
         from pydantic import ValidationError
 
-        from .validate import get_validator
+        from .validate import get_json_validator
 
         with suppress(ValidationError):
-            return get_validator(expect)(result)
+            return get_json_validator(expect)(json)
 
     return fallback
 

@@ -1,5 +1,5 @@
-from typing import Any, Callable, TypeVar
+from typing import Callable, TypeVar
 
 T = TypeVar("T")
 
-def get_validator(model_or_type_alias: type[T]) -> Callable[[Any], T]: ...
+def get_json_validator(model_or_type_alias: type[T]) -> Callable[[str], T]: ...
