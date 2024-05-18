@@ -10,7 +10,7 @@ def extract_json(
     text: str,
     fallback: F = None,
     expect: type[M] = type[JSON],
-    allow_partial: Allow = ALL,
+    allow_partial: Allow | int = ALL,
 ) -> M | F: ...
 
 json_block_pattern: Pattern = ...

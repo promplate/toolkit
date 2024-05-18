@@ -1,6 +1,6 @@
 [project]
 name = "promptools"
-version = "0.1.3.3"
+version = "0.1.3.4"
 description = "useful utilities for prompt engineering"
 authors = [{ name = "Muspi Merol", email = "me@promplate.dev" }]
 dependencies = ["partial-json-parser>=0.2.1,<0.3"]
