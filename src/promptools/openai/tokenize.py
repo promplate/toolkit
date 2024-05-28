@@ -1,6 +1,6 @@
 """Count tokens for OpenAI models"""
 
-from functools import lru_cache
+from functools import lru_cache, partial
 
 from tiktoken import get_encoding
 
@@ -21,6 +21,7 @@ def count_token(prompt, enc=None):
         return sum(count_token(i, enc) for i in prompt) + (0 if isinstance(prompt[0], str) else 3)
 
     if isinstance(prompt, dict):
-        return 3 + (len(enc.encode(f"name={prompt['name']}")) if "name" in prompt else 1) + len(enc.encode(prompt["content"]))
+        encode = partial(enc.encode, disallowed_special=())
+        return 3 + (len(encode(f"name={prompt['name']}")) if "name" in prompt else 1) + len(encode(prompt["content"]))
 
     raise TypeError(prompt)
