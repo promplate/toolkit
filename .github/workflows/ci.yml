@@ -1,4 +1,4 @@
-name: unit tests
+name: CI
 
 on: ["push", "pull_request"]
 
@@ -29,3 +29,21 @@ jobs:
           pytest -v
           uv pip install "pydantic<2"
           pytest -v
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: Install uv
+        run: pip install uv --disable-pip-version-check
+      - name: Build package
+        run: uv build
+      - name: Publish to PyPI
+        continue-on-error: true
+        run: uv publish
