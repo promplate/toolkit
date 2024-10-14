@@ -2,9 +2,12 @@ name: CI
 
 on: ["push", "pull_request"]
 
+env:
+  UV_SYSTEM_PYTHON: true
+  UV_PYTHON_DOWNLOADS: never
+
 jobs:
   test:
-    env: { UV_SYSTEM_PYTHON: true }
     strategy:
       fail-fast: false
       matrix:
@@ -29,8 +32,28 @@ jobs:
           pytest -v
           uv pip install "pydantic<2"
           pytest -v
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: Install dependencies
+        run: |
+          pip install uv --disable-pip-version-check
+          uv pip install -r pyproject.toml . --all-extras isort black
+      - name: Check formatting
+        run: |
+          isort . --check --diff
+          black . --check --diff
+      - name: Check typing
+        run: |
+          yarn global add pyright
+          pyright
   publish:
-    needs: test
+    needs: [test, check]
     runs-on: ubuntu-latest
     permissions:
       id-token: write
