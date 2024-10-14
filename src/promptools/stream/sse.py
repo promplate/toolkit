@@ -15,7 +15,7 @@ id: {{ id }}
 {% if event is not None -%}
 event: {{ event }}
 {% endif -%}
-{% for line in data.splitlines() -%}
+{% for line in (data + "\\n").splitlines() -%}
 data: {{ line }}
 {% endfor %}
 """

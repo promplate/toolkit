@@ -6,6 +6,11 @@ def test_event():
     assert str(Event("test")) != str(Event("test")), "the id field is different"
 
 
+def test_empty_line():
+    assert str(Event("")).endswith("data: \n\n")
+    assert str(Event("\n")).endswith("data: \ndata: \n\n")
+
+
 def test_stream_iterator():
     def stream():
         yield "data", "name", "id"
